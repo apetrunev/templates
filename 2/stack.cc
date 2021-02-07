@@ -1,5 +1,6 @@
 #include <vector>
 #include <cassert>
+#include <iostream>
 
 template <typename T>
 class Stack {
@@ -37,5 +38,13 @@ T const& Stack<T>::top() const
 
 int main(int argc, char *argv[])
 {
+	Stack<int> s;
+	s.push(1);
+	s.push(2);
+	std::cout << "Top: " << s.top() << std::endl;
+	s.pop();
+	std::cout << "Top: " << s.top() << std::endl;
+	s.pop();
+	if (s.empty()) std::cout << "Stack is empty" << std::endl;
 	return 0;
 }
