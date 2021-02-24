@@ -69,7 +69,7 @@ T Stack<T>::pop()
 {
   if (top < 0) throw "pop on empty stack";
   return v[top--]; // throw
-  // top decremented befor throwing exceptions
+  // top is decremented before throwing exceptions
   // Stack is inconsistent state
 }
 
