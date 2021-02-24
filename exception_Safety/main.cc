@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 
 template<typename T>
 class Stack
@@ -21,7 +22,7 @@ template<typename T>
 Stack<T>::Stack()
 {
   top = -1;
-  v = new T[nelems=10];
+  v = new T[nelems=10]; 
   if (v == 0)
     throw "out of memory";
 }
@@ -29,12 +30,12 @@ Stack<T>::Stack()
 template<typename T>
 Stack<T>::Stack(const Stack<T>& s)
 {
-  v = new T[nelems = s.nelems];
+  v = new T[nelems = s.nelems]; // leak
   if (v == 0)
     throw "out of memory";
   if (s.top > -1) {
     for (top = 0; top <= s.top; top++) {
-      v[top] = s.v[top];
+      v[top] = s.v[top]; // throw
     }
     // back to the last element
     top--;
@@ -52,10 +53,10 @@ void Stack<T>::push(T element)
 {
   top++;
   if (top == nelems-1) {
-    T* new_buffer = new T[nelems+=10];
+    T* new_buffer = new T[nelems+=10]; // leak
     if (new_buffer == 0) throw "out of memory";
     for (int i = 0; i < top; i++) {
-      new_buffer[i] = v[i];
+      new_buffer[i] = v[i]; // throw
     }
     delete [ ] v;
     v = new_buffer;
@@ -67,7 +68,9 @@ template<typename T>
 T Stack<T>::pop()
 {
   if (top < 0) throw "pop on empty stack";
-  return v[top--];
+  return v[top--]; // throw
+  // top decremented befor throwing exceptions
+  // Stack is inconsistent state
 }
 
 template<typename T>
@@ -79,8 +82,8 @@ unsigned Stack<T>::count()
 template<typename T>
 Stack<T>& Stack<T>::operator=(const Stack<T> &s)
 {
-  delete [ ] v;
-  v = new T[nelems=s.nelems];
+  delete [ ] v; // v undefined
+  v = new T[nelems=s.nelems]; // throw
   if (v == 0) throw "out of memory";
   if (s.top > -1) {
     for (top = 0; top <= s.top; top++) {
@@ -93,5 +96,14 @@ Stack<T>& Stack<T>::operator=(const Stack<T> &s)
 
 int main(int argc, char *argv[])
 {
+  Stack<int> y;
+  Stack<int> x = y;
+  assert(y.count() == 0);
+  printf("%u\n", x.count());
+  {
+    Stack<int> a, b;
+    a = b; // throw
+  }
+  // double delete
   return 0;
 }
