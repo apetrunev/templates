@@ -1,6 +1,5 @@
 #include <iostream>
 
-// 
 template<typename T>
 void foo(T t)
 {
