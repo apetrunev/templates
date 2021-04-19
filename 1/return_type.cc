@@ -1,4 +1,5 @@
 #include <iostream>
+#include <type_traits>
 
 #if __cplusplus	== 201402L
 // c++14
@@ -14,12 +15,21 @@ auto max(T1 a, T2 b)
 // c++11
 // trailing return type allow use call paramters
 // declare that return type is derived from operator ?: yields
+#if 0
 template<typename T1, typename T2>
 auto max(T1 a, T2 b) -> decltype(b < a ? a : b)
 {
 	return b < a ? a : b;
 }
 #endif
+
+template<typename T1, typename T2>
+auto max(T1 a, T2 b) -> typename std::decay<decltype(true ? a : b)>::type
+{
+	return b < a ? a : b;
+}
+#endif
+
 int main(int argc, char *argv[])
 {
 	auto ret = ::max(1, 2);
