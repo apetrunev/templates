@@ -3,9 +3,19 @@
 
 #include <vector>
 #include <cassert>
+#include <iostream>
+
+// forward declare class to implement friend function later
+template<typename T>
+class Stack;
+// define output operator for class to be a template
+template<typename T>
+std::ostream& operator<<(std::ostream& strm, Stack<T> const& s);
 
 template<typename T>
 class Stack {
+// declare specialization of nonmember function template as a friend
+friend std::ostream& operator<< <T> (std::ostream& strm, Stack<T> const &s);
 private:
 	std::vector<T> elems;
 public:
@@ -15,7 +25,19 @@ public:
 	bool empty() const {	  // return whether the stack is empty
 		return elems.empty();	
 	}
+	void printOn(std::ostream& strm) const {
+		for (T const& elem : elems) {
+			strm << elem << " ";
+		}
+	}	
 };
+
+template<typename T>
+std::ostream& operator<<(std::ostream& strm, Stack<T> const& s)
+{
+	s.printOn(strm);
+	return strm;
+}
 
 #if 0
 template<typename T>
