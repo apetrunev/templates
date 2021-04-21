@@ -7,7 +7,7 @@ BIN = stack
 
 all: $(BIN)
 
-COMPILE := $(CPP) $(CPPFALGS)
+COMPILE := $(CPP) $(CPPFLAGS)
 
 stack: stack.cc Stack.h
 	$(COMPILE) -o $@ $^
