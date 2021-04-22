@@ -9,7 +9,7 @@ all: $(BIN)
 
 COMPILE := $(CPP) $(CPPFLAGS)
 
-stack: stack.cc Stack.h
+stack: stack.cc Stack.h Stack_string.h
 	$(COMPILE) -o $@ $^
 
 clean:
