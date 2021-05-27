@@ -1,7 +1,8 @@
 CPP := g++
-CPPFLAGS := -Wall -O0 
+CPPFLAGS := -Wall -O0 -std=c++17
 CPPLIBS :=
 
+HEADERS = ../Stack.h
 SRC = main.cc
 BIN = test
 
@@ -11,7 +12,7 @@ all: $(BIN)
 
 COMPILE := $(CPP) $(CPPFLAGS)
 
-test: main.cc
+test: main.cc $(HEADERS) 
 	$(COMPILE) -o $@ main.cc
 
 clean:
